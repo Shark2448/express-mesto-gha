@@ -42,8 +42,9 @@ const deleteCard = (req, res, next) => {
   .catch((err) => {
     if (err.name === 'CastError') {
       next(res.status(400).send({ message: 'Передан некорректный id карточки' }));
+    } else {
+      next(res.status(500).send({ message: 'Произошла ошибка на сервере' }))
     }
-    next(res.status(500).send({ message: 'Произошла ошибка на сервере' }))
   })
 }
 
