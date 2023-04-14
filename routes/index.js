@@ -2,13 +2,13 @@ const router = require('express').Router();
 const userRouter = require('./users');
 const cardRouter = require('./cards');
 
-const NotFoundError = require('../errors/NotFoundError');
+const NotFoundError = 400;
 
 router.use('/users', userRouter);
 router.use('/cards', cardRouter);
 
 router.use('/', (req, res, next) => {
-  next(new NotFoundError('Данная страница не найдена'));
+  next(res.status(NotFoundError).send({ message: 'Данная страница не найдена' }));
 });
 
 module.exports = router;

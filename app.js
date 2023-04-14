@@ -2,7 +2,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 const router = require('./routes');
-const handleErrors = require('./errors/handleErrors');
 
 const app = express();
 const { PORT = 3000 } = process.env;
@@ -19,7 +18,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(router);
-app.use(handleErrors);
 
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
