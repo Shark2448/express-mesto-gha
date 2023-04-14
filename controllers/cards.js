@@ -84,7 +84,7 @@ const dislikeCard = (req, res, next) => {
     { new: true },
   )
     .orFail(() => {
-      throw new NotFoundError('Данная карточка не существует');
+      throw (res.status(NotFoundError).send({ message: 'Данная карточка не существует' }));
     })
     .then((card) => {
       res.send(card);
