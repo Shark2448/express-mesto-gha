@@ -1,6 +1,5 @@
 const User = require('../models/user');
 
-const InternalServerError = require('../errors/InternalServerError');
 const BadRequestError = require('../errors/BadRequestError');
 const NotFoundError = require('../errors/NotFoundError');
 
@@ -9,24 +8,24 @@ const getUsers = (req, res, next) => {
     .then((users) => {
       res.send(users);
     })
-    .catch(() => {
-      next(new InternalServerError({ message: 'Произошла ошибка на сервере' }));
+    .catch((err) => {
+      next(err);
     });
 };
 
 const getUser = (req, res, next) => {
   User.findById(req.params.userId)
     .orFail(() => {
-      throw new NotFoundError({ message: 'Данного пользователя не существует' });
+      throw new NotFoundError('Данного пользователя не существует');
     })
     .then((user) => {
       res.send(user);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new BadRequestError({ message: 'Передан некорректный id' }));
+        next(new BadRequestError('Передан некорректный id'));
       } else {
-        next(new InternalServerError({ message: 'Произошла ошибка на сервере' }));
+        next(err);
       }
     });
 };
@@ -40,9 +39,9 @@ const createUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequestError({ message: 'Переданы некорректные данные' }));
+        next(new BadRequestError('Переданы некорректные данные'));
       } else {
-        next(new InternalServerError({ message: 'Произошла ошибка на сервере' }));
+        next(err);
       }
     });
 };
@@ -61,7 +60,7 @@ const updateUserProfile = (req, res, next) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError({ message: 'Переданы некорректные данные' }));
       } else {
-        next(new InternalServerError({ message: 'Произошла ошибка на сервере' }));
+        next(err);
       }
     });
 };
@@ -76,7 +75,7 @@ const updateUserAvatar = (req, res, next) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError({ message: 'Переданы некорректные данные' }));
       } else {
-        next(new InternalServerError({ message: 'Произошла ошибка на сервере' }));
+        next(err);
       }
     });
 };

@@ -2,7 +2,6 @@ const Card = require('../models/card');
 
 const BadRequestError = require('../errors/BadRequestError');
 const NotFoundError = require('../errors/NotFoundError');
-const InternalServerError = require('../errors/InternalServerError');
 
 const createCard = (req, res, next) => {
   const { _id } = req.user;
@@ -17,9 +16,9 @@ const createCard = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequestError({ message: 'Переданы некорректные данные' }));
+        next(new BadRequestError('Переданы некорректные данные'));
       } else {
-        next(new InternalServerError({ message: 'Произошла ошибка на сервере' }));
+        next(err);
       }
     });
 };
@@ -30,15 +29,15 @@ const getCards = (req, res, next) => {
     .then((cards) => {
       res.send(cards);
     })
-    .catch(() => {
-      next(new InternalServerError({ message: 'Произошла ошибка на сервере' }));
+    .catch((err) => {
+      next(err);
     });
 };
 
 const deleteCard = (req, res, next) => {
   Card.findByIdAndRemove(req.params.cardId)
     .orFail(() => {
-      throw new NotFoundError({ message: 'Данная карточка не существует' });
+      throw new NotFoundError('Данная карточка не существует');
     })
     .then((card) => {
       res.send(card);
@@ -46,10 +45,10 @@ const deleteCard = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         next(
-          new BadRequestError({ message: 'Передан некорректный id карточки' }),
+          new BadRequestError('Передан некорректный id карточки'),
         );
       } else {
-        next(new InternalServerError({ message: 'Произошла ошибка на сервере' }));
+        next(err);
       }
     });
 };
@@ -69,10 +68,10 @@ const likeCard = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         next(
-          new BadRequestError({ message: 'Передан некорректный id карточки' }),
+          new BadRequestError('Передан некорректный id карточки'),
         );
       } else {
-        next(new InternalServerError({ message: 'Произошла ошибка на сервере' }));
+        next(err);
       }
     });
 };
@@ -84,7 +83,7 @@ const dislikeCard = (req, res, next) => {
     { new: true },
   )
     .orFail(() => {
-      throw new NotFoundError({ message: 'Данная карточка не существует' });
+      throw new NotFoundError('Данная карточка не существует');
     })
     .then((card) => {
       res.send(card);
@@ -92,10 +91,10 @@ const dislikeCard = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         next(
-          new BadRequestError({ message: 'Передан некорректный id карточки' }),
+          new BadRequestError('Передан некорректный id карточки'),
         );
       } else {
-        next(new InternalServerError({ message: 'Произошла ошибка на сервере' }));
+        next(err);
       }
     });
 };
