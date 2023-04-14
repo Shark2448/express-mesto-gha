@@ -1,4 +1,3 @@
-const { notFoundError, badRequestError, serverError } = require('../errors/errors');
 const Card = require('../models/card')
 
 const createCard = (req, res, next) => {
@@ -15,9 +14,9 @@ const createCard = (req, res, next) => {
   })
   .catch((err) => {
     if (err.name === 'ValidationError') {
-      next(new badRequestError('Переданы некорректные данные'))
+      next(res.status(400).send({ message: 'Переданы некорректные данные' }))
     } else {
-      next(new serverError('Произошла ошибка на сервере'));
+      next(res.status(500).send({ message: 'Произошла ошибка на сервере' }));
     }
   })
 };
@@ -28,20 +27,20 @@ const getCards = (req, res, next) => {
     res.send(cards)
   })
   .catch((err) => {
-    next(new serverError('Произошла ошибка на сервере'))
+    next(res.status(500).send({ message: 'Произошла ошибка на сервере' }))
   })
 };
 
 const deleteCard = (req, res, next) => {
   Card.findByIdAndRemove(req.params.cardId)
   .orFail(() => {
-    throw new notFoundError('Данная карточка не существует')
+    throw res.status(404).send({ message: 'Данная карточка не существует' });
   })
   .then((card) => {
     res.send(card)
   })
   .catch((err) => {
-    next(new serverError('Произошла ошибка на сервере'))
+    next(res.status(500).send({ message: 'Произошла ошибка на сервере' }))
   })
 }
 
@@ -52,16 +51,16 @@ const likeCard = (req, res, next) => {
     { new: true },
   )
   .orFail(() => {
-    throw new notFoundError('Данная карточка не существует')
+    throw res.status(404).send({ message: 'Данная карточка не существует' });
   })
   .then((card) => {
     res.send(card)
   })
   .catch((err) => {
     if (err.name === 'CastError') {
-      next(new badRequestError('Передан некорректный id карточки'))
+      next(res.status(400).send({ message: 'Передан некорректный id карточки' }));
     } else {
-      next(new serverError('Произошла ошибка на сервере'));
+      next(res.status(500).send({ message: 'Произошла ошибка на сервере' }));
     }
   })
 };
@@ -73,16 +72,16 @@ const dislikeCard = (req, res, next) => {
     { new: true },
   )
   .orFail(() => {
-    throw new notFoundError('Данная карточка не существует')
+    throw res.status(404).send({ message: 'Данная карточка не существует' });
   })
   .then((card) => {
     res.send(card)
   })
   .catch((err) => {
     if (err.name === 'CastError') {
-      next(new badRequestError('Передан некорректный id карточки'))
+      next(res.status(400).send({ message: 'Передан некорректный id карточки' }))
     } else {
-      next(new serverError('Произошла ошибка на сервере'));
+      next(res.status(500).send({ message: 'Произошла ошибка на сервере' }));
     }
   })
 }

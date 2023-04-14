@@ -1,4 +1,3 @@
-const { notFoundError, badRequestError, serverError } = require('../errors/errors');
 const User = require('../models/user');
 
 const getUsers = (req, res, next) => {
@@ -7,14 +6,14 @@ const getUsers = (req, res, next) => {
     res.send(users);
   })
   .catch((err) => {
-    next(new serverError('Произошла ошибка на сервере'))
+    next(res.status(500).send({ message: 'Произошла ошибка на сервере' }))
   })
 }
 
 const getUser = (req, res, next) => {
   User.findById(req.params.userId)
   .orFail(() => {
-    throw new notFoundError('Данного пользователя не существует')
+    throw res.status(404).send({ message: 'Данного пользователя не существует' });
   })
   .then((user) => {
     res.send(user)
@@ -22,9 +21,9 @@ const getUser = (req, res, next) => {
   .catch((err) => {
     console.log(err.name)
     if (err.name === 'CastError') {
-      next(new badRequestError('Передан некорректный id'));
+      next(res.status(400).send({ message: 'Передан некорректный id' }));
     } else {
-      next(new serverError('Произошла ошибка на сервере'))
+      next(res.status(500).send({ message: 'Произошла ошибка на сервере' }))
     }
   })
 }
@@ -39,9 +38,9 @@ const createUser = (req, res, next) => {
   })
   .catch((err) => {
     if (err.name === 'ValidationError') {
-      next(new badRequestError('Переданы некорректные данные'));
+      next(res.status(400).send({ message: 'Переданы некорректные данные' }));
     } else {
-      next(new serverError('Произошла ошибка на сервере'))
+      next(res.status(500).send({ message: 'Произошла ошибка на сервере' }))
     }
   })
 }
@@ -58,9 +57,9 @@ const updateUserProfile = (req, res, next) => {
   })
   .catch((err) => {
     if (err.name === 'ValidationError') {
-      next(new badRequestError('Переданы некорректные данные'));
+      next(res.status(400).send({ message: 'Переданы некорректные данные' }));
     } else {
-      next(new serverError('Произошла ошибка на сервере'))
+      next(res.status(500).send({ message: 'Произошла ошибка на сервере' }))
     }
   })
 }
@@ -77,9 +76,9 @@ const updateUserAvatar = (req, res, next) => {
   })
   .catch((err) => {
     if (err.name === 'ValidationError') {
-      next(new badRequestError('Переданы некорректные данные'));
+      next(res.status(400).send({ message: 'Переданы некорректные данные' }));
     } else {
-      next(new serverError('Произошла ошибка на сервере'))
+      next(res.status(500).send({ message: 'Произошла ошибка на сервере' }))
     }
   })
 }
