@@ -14,7 +14,7 @@ const createCard = (req, res, next) => {
     res.send(card);
   })
   .catch((err) => {
-    if (err.name === 'badRequestError') {
+    if (err.name === 'ValidationError') {
       next(new badRequestError('Переданы некорректные данные'))
     } else {
       next(new serverError('Произошла ошибка на сервере'));
@@ -58,7 +58,7 @@ const likeCard = (req, res, next) => {
     res.send(card)
   })
   .catch((err) => {
-    if (err.name === 'badRequestError') {
+    if (err.name === 'CastError') {
       next(new badRequestError('Передан некорректный id карточки'))
     } else {
       next(new serverError('Произошла ошибка на сервере'));
@@ -79,7 +79,7 @@ const dislikeCard = (req, res, next) => {
     res.send(card)
   })
   .catch((err) => {
-    if (err.name === 'badRequestError') {
+    if (err.name === 'CastError') {
       next(new badRequestError('Передан некорректный id карточки'))
     } else {
       next(new serverError('Произошла ошибка на сервере'));

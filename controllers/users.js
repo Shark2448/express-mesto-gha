@@ -20,7 +20,8 @@ const getUser = (req, res, next) => {
     res.send(user)
   })
   .catch((err) => {
-    if (err.name === 'badRequestError') {
+    console.log(err.name)
+    if (err.name === 'CastError') {
       next(new badRequestError('Передан некорректный id'));
     } else {
       next(new serverError('Произошла ошибка на сервере'))
@@ -33,10 +34,11 @@ const createUser = (req, res, next) => {
 
   User.create({ name, about, avatar })
   .then((newUser) => {
+
     res.send(newUser);
   })
   .catch((err) => {
-    if (err.name === 'badRequestError') {
+    if (err.name === 'ValidationError') {
       next(new badRequestError('Переданы некорректные данные'));
     } else {
       next(new serverError('Произошла ошибка на сервере'))
@@ -55,7 +57,7 @@ const updateUserProfile = (req, res, next) => {
     res.send(user)
   })
   .catch((err) => {
-    if (err.name === 'badRequestError') {
+    if (err.name === 'ValidationError') {
       next(new badRequestError('Переданы некорректные данные'));
     } else {
       next(new serverError('Произошла ошибка на сервере'))
@@ -74,7 +76,7 @@ const updateUserAvatar = (req, res, next) => {
     res.send(user)
   })
   .catch((err) => {
-    if (err.name === 'badRequestError') {
+    if (err.name === 'ValidationError') {
       next(new badRequestError('Переданы некорректные данные'));
     } else {
       next(new serverError('Произошла ошибка на сервере'))
