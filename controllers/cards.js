@@ -34,7 +34,7 @@ const getCards = (req, res, next) => {
 const deleteCard = (req, res, next) => {
   Card.findByIdAndRemove(req.params.cardId)
   .orFail(() => {
-    throw res.status(404).send({ message: 'Данная карточка не существует' });
+    throw res.status(400).send({ message: 'Данная карточка не существует' });
   })
   .then((card) => {
     res.send(card)
