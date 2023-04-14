@@ -29,6 +29,7 @@
   },
   "homepage": "https://github.com/Shark2448/express-mesto-gha#readme",
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "mongoose": "^7.0.3"
   }
 }
