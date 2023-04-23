@@ -1,4 +1,7 @@
 const cardRouter = require('express').Router();
+const { celebrate, Joi } = require('celebrate');
+const { reg } = require('../reg/reg');
+const auth = require('../middlewares/auth');
 const {
   createCard,
   getCards,
@@ -7,10 +10,12 @@ const {
   likeCard,
 } = require('../controllers/cards');
 
-cardRouter.post('/', createCard);
-cardRouter.get('/', getCards);
-cardRouter.delete('/:cardId', deleteCard);
-cardRouter.put('/:cardId/likes', likeCard);
-cardRouter.delete('/:cardId/likes', dislikeCard);
+cardRouter.post('/', auth, celebrate({
+  link: Joi.string().required().regex(reg),
+}), createCard);
+cardRouter.get('/', auth, getCards);
+cardRouter.delete('/:cardId', auth, deleteCard);
+cardRouter.put('/:cardId/likes', auth, likeCard);
+cardRouter.delete('/:cardId/likes', auth, dislikeCard);
 
 module.exports = cardRouter;
