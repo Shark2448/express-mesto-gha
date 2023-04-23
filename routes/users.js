@@ -1,6 +1,6 @@
 const userRouter = require('express').Router();
-const { celebrate, Joi } = require('celebrate');
-const { reg } = require('../reg/reg');
+// const { celebrate, Joi } = require('celebrate');
+// const { reg } = require('../reg/reg');
 const auth = require('../middlewares/auth');
 const {
   getUsers,
@@ -14,8 +14,6 @@ userRouter.get('/', auth, getUsers);
 userRouter.get('/:userId', auth, getUser);
 userRouter.get('/me', auth, getUserInfo);
 userRouter.patch('/me', auth, updateUserProfile);
-userRouter.patch('/me/avatar', auth, celebrate({
-  avatar: Joi.string().regex(reg),
-}), updateUserAvatar);
+userRouter.patch('/me/avatar', auth, updateUserAvatar);
 
 module.exports = userRouter;

@@ -1,6 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
+const { errors } = require('celebrate');
+
 const {
   login,
   createUser,
@@ -23,6 +25,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(router);
 
 app.use(handleErrors);
+
+app.use(errors());
 
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
