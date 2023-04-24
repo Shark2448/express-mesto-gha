@@ -6,7 +6,7 @@ const BadTokenError = require('../errors/BadTokenError');
 
 module.exports = (req, res, next) => {
   const { authorization } = req.headers;
-  if (!authorization || !authorization.starsWith('Bearer ')) {
+  if (!authorization || !authorization.startsWith('Bearer ')) {
     return next(new BadTokenError('Необходима авторизация'));
   }
 
