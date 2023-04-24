@@ -36,15 +36,15 @@ const getCards = (req, res, next) => {
 };
 
 const deleteCard = (req, res, next) => {
-  Card.findByIdAndRemove(req.params.cardId)
+  Card.findById(req.params.cardId)
     .orFail(() => {
       throw new NotFoundError('Данная карточка не существует');
     })
     .then((card) => {
-      if (!card.owner.toString() === req.user._id) {
-        next(new ForbiddenError('У вас нет прав для удаления карточки'));
+      if (card.owner.toString() === req.user._id) {
+        Card.findByIdAndRemove(req.params.cardId);
       } else {
-        res.send(card);
+        next(new ForbiddenError('У вас нет прав для удаления карточки'));
       }
     })
     .catch((err) => {
