@@ -41,11 +41,10 @@ const deleteCard = (req, res, next) => {
       throw new NotFoundError('Данная карточка не существует');
     })
     .then((card) => {
-      res.send(card);
-    })
-    .then((card) => {
       if (!card.owner.toString() === req.user._id) {
         next(new ForbiddenError('У вас нет прав для удаления карточки'));
+      } else {
+        res.send(card);
       }
     })
     .catch((err) => {
