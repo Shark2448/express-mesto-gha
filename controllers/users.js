@@ -23,9 +23,7 @@ const login = (req, res, next) => {
 
 const getUserInfo = (req, res, next) => {
   User.findById(req.user._id)
-    .then((user) => {
-      res.send(user);
-    })
+    .then((user) => res.send(user))
     .catch(next);
 };
 

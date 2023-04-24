@@ -45,7 +45,7 @@ const deleteCard = (req, res, next) => {
     })
     .then((card) => {
       if (!card.owner.toString() === req.user._id) {
-        throw new ForbiddenError('У вас нет прав для удаления карточки');
+        next(new ForbiddenError('У вас нет прав для удаления карточки'));
       }
     })
     .catch((err) => {
