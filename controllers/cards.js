@@ -42,7 +42,10 @@ const deleteCard = (req, res, next) => {
     })
     .then((card) => {
       if (card.owner.toString() === req.user._id) {
-        Card.findByIdAndRemove(req.params.cardId);
+        Card.deleteOne(card)
+          .then(() => {
+            res.send(card);
+          });
       } else {
         next(new ForbiddenError('У вас нет прав для удаления карточки'));
       }

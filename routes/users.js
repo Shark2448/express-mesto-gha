@@ -11,11 +11,6 @@ const {
 } = require('../controllers/users');
 
 userRouter.get('/', getUsers);
-userRouter.get('/:userId', celebrate({
-  params: Joi.object().keys({
-    userId: Joi.string().alphanum().length(24).hex(),
-  }),
-}), getUser);
 userRouter.get('/me', getUserInfo);
 userRouter.patch('/me', celebrate({
   body: Joi.object().keys({
@@ -28,5 +23,10 @@ userRouter.patch('/me/avatar', celebrate({
     avatar: Joi.string().regex(reg),
   }),
 }), updateUserAvatar);
+userRouter.get('/:userId', celebrate({
+  params: Joi.object().keys({
+    userId: Joi.string().alphanum().length(24).hex(),
+  }),
+}), getUser);
 
 module.exports = userRouter;
