@@ -32,9 +32,7 @@ const getUsers = (req, res, next) => {
     .then((users) => {
       res.send(users);
     })
-    .catch((err) => {
-      next(err);
-    });
+    .catch(next);
 };
 
 const getUser = (req, res, next) => {
